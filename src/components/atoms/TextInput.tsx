@@ -1,26 +1,20 @@
 import { memo, VFC } from 'react';
-// import styled from 'styled-components';
+import styled from 'styled-components';
 
-// type Props = {
-//   children: ReactNode;
-//   onClick?: () => void;
-// };
+type Props = {
+  inputType: 'text' | 'email' | 'password';
+  placeholder: string;
+};
 
-export const TextInput: VFC = memo(() => {
-  // const { children, onClick } = props;
-  return <input type='text' />;
+export const TextInput: VFC<Props> = memo((props) => {
+  const { inputType, placeholder } = props;
+  return <SInput type={inputType} placeholder={placeholder} />;
 });
 
-// const SButton = styled.div`
-//   display: inline-block;
-//   padding: 8px 12px;
-//   color: #fff;
-//   background-color: #078080;
-//   border-radius: 6px;
-//   &:first-child {
-//     margin-right: 12px;
-//   }
-//   &:hover {
-//     opacity: 0.8;
-//   }
-// `;
+const SInput = styled.input`
+  display: inline-block;
+  width: 30%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`;
