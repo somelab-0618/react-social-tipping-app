@@ -1,5 +1,5 @@
 // ユーザー名用input要素
-import { memo, ReactNode, VFC } from 'react';
+import { ChangeEvent, memo, ReactNode, VFC } from 'react';
 import styled from 'styled-components';
 import { TextInput } from '../atoms/TextInput';
 
@@ -7,15 +7,21 @@ type Props = {
   children: ReactNode;
   inputType: 'text' | 'email' | 'password';
   placeholder: string;
+  value: string | null;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
 export const FormInput: VFC<Props> = memo((props) => {
-  const { children, inputType, placeholder } = props;
+  const { children, inputType, placeholder, onChange, value } = props;
   return (
     <>
       <SFormControl>
         <SFormlabel>{children}</SFormlabel>
-        <TextInput inputType={inputType} placeholder={placeholder} />
+        <TextInput
+          inputType={inputType}
+          placeholder={placeholder}
+          onChange={onChange}
+        />
       </SFormControl>
     </>
   );

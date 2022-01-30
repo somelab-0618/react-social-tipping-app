@@ -1,14 +1,15 @@
-import { memo, VFC } from 'react';
+import { ChangeEvent, memo, VFC } from 'react';
 import styled from 'styled-components';
 
 type Props = {
   inputType: 'text' | 'email' | 'password';
   placeholder: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
 export const TextInput: VFC<Props> = memo((props) => {
-  const { inputType, placeholder } = props;
-  return <SInput type={inputType} placeholder={placeholder} />;
+  const { inputType, placeholder, onChange } = props;
+  return <SInput type={inputType} placeholder={placeholder} onChange={onChange} />;
 });
 
 const SInput = styled.input`
