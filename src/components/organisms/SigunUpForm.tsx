@@ -49,7 +49,6 @@ export const SignUpForm: VFC = memo(() => {
         inputType={'text'}
         placeholder={'ユーザー名'}
         onChange={onChangeInputName}
-        value={userName}
       >
         ユーザー名
       </FormInput>
@@ -57,7 +56,6 @@ export const SignUpForm: VFC = memo(() => {
         inputType={'email'}
         placeholder={'Eメールアドレス'}
         onChange={onChangeInputEmail}
-        value={userEmail}
       >
         Email
       </FormInput>
@@ -65,7 +63,6 @@ export const SignUpForm: VFC = memo(() => {
         inputType={'password'}
         placeholder={'password'}
         onChange={onChangeInputPassword}
-        value={userPassword}
       >
         Password
       </FormInput>

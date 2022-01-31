@@ -7,12 +7,11 @@ type Props = {
   children: ReactNode;
   inputType: 'text' | 'email' | 'password';
   placeholder: string;
-  value: string | null;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
 export const FormInput: VFC<Props> = memo((props) => {
-  const { children, inputType, placeholder, onChange, value } = props;
+  const { children, inputType, placeholder, onChange } = props;
   return (
     <>
       <SFormControl>
