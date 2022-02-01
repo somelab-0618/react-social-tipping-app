@@ -6,10 +6,10 @@ import styled from 'styled-components';
 import { MainButton } from '../atoms/MainButton';
 import { FormInput } from '../molecules/FormInput';
 
-import '../../config/firebase';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { useAuth } from '../hooks/useAuth';
 
 export const LoginForm: VFC = memo(() => {
+  const { login } = useAuth();
   const [userEmail, setUserEmail] = useState<string>('');
   const [userPassword, setUserPassword] = useState<string>('');
 
@@ -21,21 +21,8 @@ export const LoginForm: VFC = memo(() => {
     setUserPassword(e.target.value);
   };
 
-  const handleLogin = (userEmail: string, userPassword: string) => {
-    const auth = getAuth();
-    signInWithEmailAndPassword(auth, userEmail, userPassword)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user);
-        alert('ログイン完了');
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error({ code: errorCode, message: errorMessage });
-        // ..
-      });
-  };
+  const handleLogin = (userEmail: string, userPassword: string) =>
+    login(userEmail, userPassword);
 
   return (
     <>
