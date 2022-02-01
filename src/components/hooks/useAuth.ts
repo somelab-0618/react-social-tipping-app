@@ -3,6 +3,7 @@ import {
   getAuth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  updateProfile,
 } from 'firebase/auth';
 
 export const useAuth = () => {
@@ -22,15 +23,23 @@ export const useAuth = () => {
       });
   };
 
-  const signUp = (userEmail: string, userPassword: string) => {
+  const signUp = (userName: string, userEmail: string, userPassword: string) => {
     const auth = getAuth();
     createUserWithEmailAndPassword(auth, userEmail, userPassword)
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        // 次にユーザ情報をdbに登録させる処理
-        console.log(user);
-        alert('登録完了');
+        updateProfile(user, { displayName: userName })
+          .then(() => {
+            console.log(user.displayName);
+            alert('登録完了');
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error({ code: errorCode, message: errorMessage });
+            // ..
+          });
       })
       .catch((error) => {
         const errorCode = error.code;

@@ -26,8 +26,8 @@ export const SignUpForm: VFC = memo(() => {
     setUserPassword(e.target.value);
   };
 
-  const handleSignUp = (userEmail: string, userPassword: string) =>
-    signUp(userEmail, userPassword);
+  const handleSignUp = (userName: string, userEmail: string, userPassword: string) =>
+    signUp(userName, userEmail, userPassword);
 
   return (
     <>
@@ -52,7 +52,7 @@ export const SignUpForm: VFC = memo(() => {
       >
         Password
       </FormInput>
-      <MainButton onClick={() => handleSignUp(userEmail, userPassword)}>
+      <MainButton onClick={() => handleSignUp(userName, userEmail, userPassword)}>
         新規登録
       </MainButton>
       <SLoginLink to='/'>ログインはこちら</SLoginLink>
