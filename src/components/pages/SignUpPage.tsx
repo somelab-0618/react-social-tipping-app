@@ -1,5 +1,5 @@
 import { memo, VFC } from 'react';
-import { SignUpForm } from '../organisms/SigunUpForm';
+import { SignUpForm } from '../organisms/SignUpForm';
 
 export const SignUpPage: VFC = memo(() => {
   return (

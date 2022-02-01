@@ -30,6 +30,7 @@ const SFormControl = styled.div`
   display: flex;
   max-width: 100%;
   justify-content: center;
+  align-items: center;
   margin-bottom: 12px;
 `;
 

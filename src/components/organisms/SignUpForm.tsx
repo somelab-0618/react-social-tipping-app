@@ -69,7 +69,7 @@ export const SignUpForm: VFC = memo(() => {
       <MainButton onClick={() => handleSignUp(userEmail, userPassword)}>
         新規登録
       </MainButton>
-      <SLoginLink to='/users'>ログインはこちら</SLoginLink>
+      <SLoginLink to='/'>ログインはこちら</SLoginLink>
     </>
   );
 });
