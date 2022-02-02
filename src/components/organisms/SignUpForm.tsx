@@ -6,10 +6,10 @@ import styled from 'styled-components';
 import { MainButton } from '../atoms/MainButton';
 import { FormInput } from '../molecules/FormInput';
 
-import '../../config/firebase';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { useAuth } from '../hooks/useAuth';
 
 export const SignUpForm: VFC = memo(() => {
+  const { signUp } = useAuth();
   const [userName, setUserName] = useState<string>('');
   const [userEmail, setUserEmail] = useState<string>('');
   const [userPassword, setUserPassword] = useState<string>('');
@@ -26,22 +26,8 @@ export const SignUpForm: VFC = memo(() => {
     setUserPassword(e.target.value);
   };
 
-  const handleSignUp = (userEmail: string, userPassword: string) => {
-    const auth = getAuth();
-    createUserWithEmailAndPassword(auth, userEmail, userPassword)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
-        alert('登録完了');
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error({ code: errorCode, message: errorMessage });
-        // ..
-      });
-  };
+  const handleSignUp = (userName: string, userEmail: string, userPassword: string) =>
+    signUp(userName, userEmail, userPassword);
 
   return (
     <>
@@ -66,10 +52,10 @@ export const SignUpForm: VFC = memo(() => {
       >
         Password
       </FormInput>
-      <MainButton onClick={() => handleSignUp(userEmail, userPassword)}>
+      <MainButton onClick={() => handleSignUp(userName, userEmail, userPassword)}>
         新規登録
       </MainButton>
-      <SLoginLink to='/users'>ログインはこちら</SLoginLink>
+      <SLoginLink to='/'>ログインはこちら</SLoginLink>
     </>
   );
 });
