@@ -54,11 +54,11 @@ export const useAuth = () => {
         } else {
           signOut(auth)
             .then(() => {
-              alert('wallet残高を取得できませんでした。ログインし直してくだ');
+              alert('wallet残高を取得できませんでした。ログインし直してください。');
               navigate('/');
             })
             .catch((error) => {
-              alert('管理者に連絡してください');
+              alert('管理者に連絡してください。');
               navigate('/');
             });
         }
@@ -104,12 +104,12 @@ export const useAuth = () => {
               signOut(auth)
                 .then(() => {
                   alert(
-                    'wallet残高を取得できませんでした。ログインし直してください'
+                    'wallet残高を取得できませんでした。ログインし直してください。'
                   );
                   navigate('/');
                 })
                 .catch((error) => {
-                  alert('管理者に連絡してください');
+                  alert('管理者に連絡してください。');
                   navigate('/');
                 });
             }
