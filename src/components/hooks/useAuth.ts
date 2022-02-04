@@ -27,19 +27,19 @@ export const useAuth = () => {
     const docRef = doc(db, 'users', user.uid);
     const docSnap = await getDoc(docRef);
 
-    if (docSnap.exists()) {
-      const currentUser: LoginUser = {
-        name: user.displayName,
-        wallet: docSnap.data().wallet,
-      };
-      return currentUser;
-    } else {
+    if (!docSnap.exists()) {
       const currentUser: LoginUser = {
         name: user.displayName,
         wallet: '取得できませんでした',
       };
       return currentUser;
     }
+
+    const currentUser: LoginUser = {
+      name: user.displayName,
+      wallet: docSnap.data().wallet,
+    };
+    return currentUser;
   };
 
   const login = (userEmail: string, userPassword: string) => {
@@ -47,11 +47,8 @@ export const useAuth = () => {
       .then(async (UserCredential) => {
         const user = UserCredential.user;
         const currentUser = await getCurrentUser(db, user);
-
-        if (currentUser && typeof currentUser.wallet === 'number') {
-          setLoginUser(currentUser);
-          navigate('/dashboard');
-        } else {
+        // currentUserがaになるようなことはないので、wallet残高が取得できているかを判定
+        if (typeof currentUser.wallet !== 'number') {
           signOut(auth)
             .then(() => {
               alert('wallet残高を取得できませんでした。ログインし直してください。');
@@ -62,6 +59,9 @@ export const useAuth = () => {
               navigate('/');
             });
         }
+
+        setLoginUser(currentUser);
+        navigate('/dashboard');
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -96,11 +96,7 @@ export const useAuth = () => {
             }
 
             const currentUser = await getCurrentUser(db, user);
-
-            if (currentUser && typeof currentUser.wallet === 'number') {
-              setLoginUser(currentUser);
-              navigate('/dashboard');
-            } else {
+            if (typeof currentUser.wallet !== 'number') {
               signOut(auth)
                 .then(() => {
                   alert(
@@ -113,6 +109,9 @@ export const useAuth = () => {
                   navigate('/');
                 });
             }
+
+            setLoginUser(currentUser);
+            navigate('/dashboard');
           })
           .catch((error) => {
             const errorCode = error.code;
