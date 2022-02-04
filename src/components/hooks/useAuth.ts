@@ -27,7 +27,7 @@ export const useAuth = () => {
     const docRef = doc(db, 'users', user.uid);
     const docSnap = await getDoc(docRef);
 
-    if (!docSnap.exists()) {
+    if (!docSnap.exists() || !docSnap.data().wallet) {
       const currentUser: LoginUser = {
         name: user.displayName,
         wallet: '取得できませんでした',
@@ -47,17 +47,11 @@ export const useAuth = () => {
       .then(async (UserCredential) => {
         const user = UserCredential.user;
         const currentUser = await getCurrentUser(db, user);
-        // currentUserがaになるようなことはないので、wallet残高が取得できているかを判定
+        // ログインできた時点でcurrentUserがfalseになるようなことはないので、
+        // wallet残高が取得できているかを判定
         if (typeof currentUser.wallet !== 'number') {
-          signOut(auth)
-            .then(() => {
-              alert('wallet残高を取得できませんでした。ログインし直してください。');
-              navigate('/');
-            })
-            .catch((error) => {
-              alert('管理者に連絡してください。');
-              navigate('/');
-            });
+          alert('wallet残高を取得できませんでした。管理者に確認してください。');
+          navigate('/dashboard');
         }
 
         setLoginUser(currentUser);
@@ -97,17 +91,8 @@ export const useAuth = () => {
 
             const currentUser = await getCurrentUser(db, user);
             if (typeof currentUser.wallet !== 'number') {
-              signOut(auth)
-                .then(() => {
-                  alert(
-                    'wallet残高を取得できませんでした。ログインし直してください。'
-                  );
-                  navigate('/');
-                })
-                .catch((error) => {
-                  alert('管理者に連絡してください。');
-                  navigate('/');
-                });
+              alert('wallet取得を設定できませんでした。管理者に確認してください。');
+              navigate('/dashboard');
             }
 
             setLoginUser(currentUser);
