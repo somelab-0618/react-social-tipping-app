@@ -58,9 +58,8 @@ export const useAuth = () => {
         navigate('/dashboard');
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error({ code: errorCode, message: errorMessage });
+        console.error({ code: error.code, message: error.message });
+        alert('ログインできませんでした。');
       });
   };
 
@@ -99,21 +98,29 @@ export const useAuth = () => {
             navigate('/dashboard');
           })
           .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.error({ code: errorCode, message: errorMessage });
+            console.error({ code: error.code, message: error.message });
             alert('登録に失敗しました。再登録してください。');
             navigate('/sign-up');
           });
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error({ code: errorCode, message: errorMessage });
+        console.error({ code: error.code, message: error.message });
         alert('登録に失敗しました。再登録してください。');
         navigate('/sign-up');
       });
   };
 
-  return { login, signUp };
+  const logout = () => {
+    signOut(auth)
+      .then(() => {
+        alert('ログアウトします。');
+        navigate('/');
+      })
+      .catch((error) => {
+        console.error({ code: error.code, message: error.message });
+        alert('ログアウトに失敗しました。管理者に確認してください。');
+      });
+  };
+
+  return { login, signUp, logout };
 };

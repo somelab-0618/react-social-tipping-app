@@ -4,11 +4,16 @@ import styled from 'styled-components';
 type Props = {
   children: ReactNode;
   onClick?: () => void;
+  className?: string;
 };
 
 export const MainButton: VFC<Props> = memo((props) => {
-  const { children, onClick } = props;
-  return <SButton onClick={onClick}>{children}</SButton>;
+  const { children, onClick, className } = props;
+  return (
+    <SButton onClick={onClick} className={className}>
+      {children}
+    </SButton>
+  );
 });
 
 const SButton = styled.div`
