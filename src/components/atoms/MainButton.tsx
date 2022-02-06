@@ -22,6 +22,7 @@ const SButton = styled.div`
   color: #fff;
   background-color: #078080;
   border-radius: 6px;
+  cursor: pointer;
   &:first-child {
     margin-right: 12px;
   }

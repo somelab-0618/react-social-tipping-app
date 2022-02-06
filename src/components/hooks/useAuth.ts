@@ -30,6 +30,7 @@ export const useAuth = () => {
     if (!docSnap.exists() || !docSnap.data().wallet) {
       const currentUser: LoginUser = {
         name: user.displayName,
+        uid: user.uid,
         wallet: '取得できませんでした',
       };
       return currentUser;
@@ -37,6 +38,7 @@ export const useAuth = () => {
 
     const currentUser: LoginUser = {
       name: user.displayName,
+      uid: user.uid,
       wallet: docSnap.data().wallet,
     };
     return currentUser;
@@ -60,6 +62,7 @@ export const useAuth = () => {
       .catch((error) => {
         console.error({ code: error.code, message: error.message });
         alert('ログインできませんでした。');
+        navigate('/');
       });
   };
 
@@ -73,6 +76,8 @@ export const useAuth = () => {
             // walletデータ作成
             try {
               await setDoc(doc(db, 'users', user.uid), {
+                name: userName,
+                uid: user.uid,
                 wallet: 100, // 初期値
               });
             } catch (e) {
@@ -84,6 +89,7 @@ export const useAuth = () => {
                   navigate('/sign-up');
                 })
                 .catch((error) => {
+                  console.error({ code: error.code, message: error.message });
                   alert('登録に失敗しました。管理者に連絡してください。');
                 });
             }
