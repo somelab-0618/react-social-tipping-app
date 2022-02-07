@@ -1,5 +1,5 @@
 import { memo, VFC } from 'react';
-// import styled from 'styled-components';
+
 import { LoginUser } from '../../types/type';
 import { UserListItem } from '../molecules/UserListItem';
 

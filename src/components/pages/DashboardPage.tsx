@@ -15,25 +15,21 @@ export const DashboardPage: VFC = memo(() => {
   const { getAllUsers } = useUsers();
   const { loginUser } = useContext(LoginUserContext);
   const navigate = useNavigate();
-  let isLogin = false;
 
   const handleLogout = () => logout();
 
-  // ログインチェック
-  if (loginUser !== null) {
-    isLogin = true;
-  }
-
   useEffect(() => {
-    if (false) {
+    if (!loginUser) {
       navigate('/');
     }
 
-    let abortCtrl = new AbortController();
+    const abortCtrl = new AbortController();
 
     const fetchUsersData = async () => {
-      const users = await getAllUsers(loginUser!.uid);
-      setUsersData(users);
+      if (loginUser) {
+        const users = await getAllUsers(loginUser.uid);
+        setUsersData(users);
+      }
     };
     fetchUsersData();
 
@@ -50,10 +46,10 @@ export const DashboardPage: VFC = memo(() => {
       <div>
         <h1>Dashboard</h1>
         <SUserData>
-          ログイン中: <span>{isLogin && loginUser!.name}</span>
+          ログイン中: <span>{loginUser && loginUser.name}</span>
         </SUserData>
         <SUserData>
-          Wallet残高: <span>{isLogin && loginUser!.wallet}</span>
+          Wallet残高: <span>{loginUser && loginUser.wallet}</span>
         </SUserData>
       </div>
       <SUserListWrap>
