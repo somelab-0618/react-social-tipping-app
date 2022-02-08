@@ -4,13 +4,15 @@ import styled from 'styled-components';
 
 import { useAuth } from '../hooks/useAuth';
 import { useUsers } from '../hooks/useUsers';
-import { LoginUserContext } from '../../provider';
+import { LoginUserContext } from '../../providers/LoginUserProvider';
 import { MainButton } from '../atoms/MainButton';
 import { UserList } from '../organisms/UserList';
 import { LoginUser } from '../../types/type';
+import { AllUsersContext } from '../../providers/AllUsersProvider';
 
 export const DashboardPage: VFC = memo(() => {
-  const [usersData, setUsersData] = useState<LoginUser[]>([]);
+  const { allUsers, setAllUsers } = useContext(AllUsersContext);
+  // const [usersData, setUsersData] = useState<LoginUser[]>([]);
   const { logout } = useAuth();
   const { getAllUsers } = useUsers();
   const { loginUser } = useContext(LoginUserContext);
@@ -27,8 +29,10 @@ export const DashboardPage: VFC = memo(() => {
 
     const fetchUsersData = async () => {
       if (loginUser) {
-        const users = await getAllUsers(loginUser.uid);
-        setUsersData(users);
+        const users = await getAllUsers(loginUser);
+        console.log(users);
+        setAllUsers(users);
+        console.log(allUsers);
       }
     };
     fetchUsersData();
@@ -53,7 +57,7 @@ export const DashboardPage: VFC = memo(() => {
         </SUserData>
       </div>
       <SUserListWrap>
-        <UserList users={usersData} />
+        <UserList users={allUsers!} currentUser={loginUser!} />
       </SUserListWrap>
     </>
   );
@@ -74,6 +78,8 @@ const SLogoutButtonWrap = styled.div`
 `;
 
 const SUserListWrap = styled.div`
+  max-width: 500px;
+  margin: 0 auto;
   padding-top: 24px;
 `;
 const SLogoutButton = styled(MainButton)`

@@ -5,15 +5,16 @@ import { UserListItem } from '../molecules/UserListItem';
 
 type Props = {
   users: LoginUser[];
+  currentUser: LoginUser;
 };
 
 export const UserList: VFC<Props> = memo((props) => {
-  const { users } = props;
+  const { users, currentUser } = props;
   return (
     <>
       <ul>
         {users.map((user) => (
-          <UserListItem user={user} key={user.uid} />
+          <UserListItem user={user} currentUser={currentUser} key={user.uid} />
         ))}
       </ul>
     </>

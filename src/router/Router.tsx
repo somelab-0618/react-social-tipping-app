@@ -5,7 +5,8 @@ import { SignUpPage } from '../components/pages/SignUpPage';
 import { LoginPage } from '../components/pages/LoginPage';
 import { DashboardPage } from '../components/pages/DashboardPage';
 import { NotFoundPage } from '../components/pages/NotFoundPage';
-import { LoginUserProvider } from '../provider';
+import { LoginUserProvider } from '../providers/LoginUserProvider';
+// import { AllUsersProvider } from '../providers/AllUsersProvider';
 
 export const Router: VFC = memo(() => {
   return (
