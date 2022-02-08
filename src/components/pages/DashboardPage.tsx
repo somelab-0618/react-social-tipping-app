@@ -1,4 +1,4 @@
-import { memo, VFC, useContext, useEffect, useState } from 'react';
+import { memo, VFC, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -7,12 +7,10 @@ import { useUsers } from '../hooks/useUsers';
 import { LoginUserContext } from '../../providers/LoginUserProvider';
 import { MainButton } from '../atoms/MainButton';
 import { UserList } from '../organisms/UserList';
-import { LoginUser } from '../../types/type';
 import { AllUsersContext } from '../../providers/AllUsersProvider';
 
 export const DashboardPage: VFC = memo(() => {
   const { allUsers, setAllUsers } = useContext(AllUsersContext);
-  // const [usersData, setUsersData] = useState<LoginUser[]>([]);
   const { logout } = useAuth();
   const { getAllUsers } = useUsers();
   const { loginUser } = useContext(LoginUserContext);

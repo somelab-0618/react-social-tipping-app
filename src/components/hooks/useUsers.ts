@@ -51,7 +51,7 @@ export const useUsers = () => {
         const currentUserDoc = await transaction.get(currentUserDocRef);
         const sendToUserDoc = await transaction.get(sendToUserDocRef);
         if (!currentUserDoc.exists() || !sendToUserDoc.exists()) {
-          throw 'Document does not exist!';
+          throw new Error('Document does not exist!');
         }
 
         const newCurrentUserWallet = currentUserDoc.data().wallet - amount;
