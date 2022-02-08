@@ -1,5 +1,4 @@
 import '../../config/firebase';
-import { useContext } from 'react';
 import {
   collection,
   doc,
@@ -14,13 +13,10 @@ import {
 } from 'firebase/firestore';
 
 import { LoginUser } from '../../types/type';
-import { AllUsersContext } from '../../providers/AllUsersProvider';
 
 const db = getFirestore();
 
 export const useUsers = () => {
-  const { setAllUsers } = useContext(AllUsersContext);
-
   const getAllUsers = async (currentUser: LoginUser) => {
     const q = query(collection(db, 'users'), where('uid', '!=', currentUser.uid));
     const querySnapshot = await getDocs(q);

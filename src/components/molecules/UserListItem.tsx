@@ -38,6 +38,12 @@ export const UserListItem: VFC<Props> = memo((props) => {
       alert('数値を入力してください。');
       return;
     }
+
+    if (amount > currentUser.wallet) {
+      alert('残高が足りません');
+      return;
+    }
+
     const walletResult = await updateWallet(currentUser, sendToUser, amount);
     if (walletResult) {
       alert('walletを送信しました');
