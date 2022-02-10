@@ -2,9 +2,9 @@ import { ChangeEvent, memo, VFC } from 'react';
 import styled from 'styled-components';
 
 type Props = {
-  inputType: 'text' | 'email' | 'password';
+  inputType: 'text' | 'number' | 'email' | 'password';
   placeholder: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 
 export const TextInput: VFC<Props> = memo((props) => {

@@ -1,6 +1,7 @@
 import { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react';
+import { AllUsersProvider } from './AllUsersProvider';
 
-import { LoginUser } from './types/type';
+import { LoginUser } from '../types/type';
 
 type LoginUserContextType = {
   loginUser: LoginUser | null;
@@ -15,7 +16,7 @@ export const LoginUserProvider = (props: { children: ReactNode }) => {
 
   return (
     <LoginUserContext.Provider value={{ loginUser, setLoginUser }}>
-      {children}
+      <AllUsersProvider>{children}</AllUsersProvider>
     </LoginUserContext.Provider>
   );
 };

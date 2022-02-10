@@ -13,7 +13,7 @@ import {
 } from 'firebase/auth';
 import { getFirestore, doc, setDoc, getDoc, Firestore } from 'firebase/firestore';
 
-import { LoginUserContext } from '../../provider';
+import { LoginUserContext } from '../../providers/LoginUserProvider';
 import { LoginUser } from '../../types/type';
 
 const auth = getAuth();
@@ -23,7 +23,7 @@ export const useAuth = () => {
   const navigate = useNavigate();
   const { setLoginUser } = useContext(LoginUserContext);
 
-  const getCurrentUser = async (db: Firestore, user: User): Promise<LoginUser> => {
+  const getUser = async (db: Firestore, user: User): Promise<LoginUser> => {
     const docRef = doc(db, 'users', user.uid);
     const docSnap = await getDoc(docRef);
 
@@ -48,7 +48,7 @@ export const useAuth = () => {
     signInWithEmailAndPassword(auth, userEmail, userPassword)
       .then(async (UserCredential) => {
         const user = UserCredential.user;
-        const currentUser = await getCurrentUser(db, user);
+        const currentUser = await getUser(db, user);
         // ログインできた時点でcurrentUserがfalseになるようなことはないので、
         // wallet残高が取得できているかを判定
         if (typeof currentUser.wallet !== 'number') {
@@ -94,7 +94,7 @@ export const useAuth = () => {
                 });
             }
 
-            const currentUser = await getCurrentUser(db, user);
+            const currentUser = await getUser(db, user);
             if (typeof currentUser.wallet !== 'number') {
               alert('wallet取得を設定できませんでした。管理者に確認してください。');
               navigate('/dashboard');
@@ -128,5 +128,5 @@ export const useAuth = () => {
       });
   };
 
-  return { login, signUp, logout };
+  return { login, signUp, logout, getUser };
 };

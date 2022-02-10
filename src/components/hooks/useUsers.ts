@@ -1,25 +1,28 @@
 import '../../config/firebase';
 import {
   collection,
+  doc,
   DocumentData,
+  getDoc,
   getDocs,
   getFirestore,
   query,
   QueryDocumentSnapshot,
+  runTransaction,
   where,
 } from 'firebase/firestore';
+
 import { LoginUser } from '../../types/type';
 
 const db = getFirestore();
 
 export const useUsers = () => {
-  const getAllUsers = async (currentUserUid: string | null) => {
-    const q = query(collection(db, 'users'), where('uid', '!=', currentUserUid));
+  const getAllUsers = async (currentUser: LoginUser) => {
+    const q = query(collection(db, 'users'), where('uid', '!=', currentUser.uid));
     const querySnapshot = await getDocs(q);
 
     const users = querySnapshot.docs.reduce(
       (acc: LoginUser[], doc: QueryDocumentSnapshot<DocumentData>) => {
-        // return [...acc, doc.data() as LoginUser]; // キャストしないと通らないのですが、やはり型どおりのオブジェクトを明示的に作成するしかないのでしょうか？
         return [
           ...acc,
           {
@@ -32,19 +35,46 @@ export const useUsers = () => {
       []
     );
 
-    // mapでもやってみました
-    // const users = querySnapshot.docs.map(
-    //   (doc: QueryDocumentSnapshot<DocumentData>) => {
-    //     return {
-    //       name: doc.data().name,
-    //       uid: doc.data().uid,
-    //       wallet: doc.data().wallet,
-    //     };
-    //   }
-    // );
-
     return users;
   };
 
-  return { getAllUsers };
+  const updateWallet = async (
+    currentUser: LoginUser,
+    sendToUser: LoginUser,
+    amount: number
+  ) => {
+    const currentUserDocRef = doc(db, 'users', currentUser.uid!);
+    const sendToUserDocRef = doc(db, 'users', sendToUser.uid!);
+
+    try {
+      await runTransaction(db, async (transaction) => {
+        const currentUserDoc = await transaction.get(currentUserDocRef);
+        const sendToUserDoc = await transaction.get(sendToUserDocRef);
+        if (!currentUserDoc.exists() || !sendToUserDoc.exists()) {
+          throw new Error('Document does not exist!');
+        }
+
+        const newCurrentUserWallet = currentUserDoc.data().wallet - amount;
+        transaction.update(currentUserDocRef, { wallet: newCurrentUserWallet });
+
+        const newSendToUserWallet = sendToUserDoc.data().wallet + amount;
+        transaction.update(sendToUserDocRef, { wallet: newSendToUserWallet });
+      });
+      const currentUserData = await getDoc(currentUserDocRef);
+
+      const updatedCurrentUser = {
+        name: currentUserData.data()!.name,
+        uid: currentUserData.data()!.uid,
+        wallet: currentUserData.data()!.wallet,
+      };
+
+      console.log('Transaction successfully committed!');
+      return updatedCurrentUser;
+    } catch (e) {
+      console.log('Transaction failed: ', e);
+      return null;
+    }
+  };
+
+  return { getAllUsers, updateWallet };
 };
